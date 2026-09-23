@@ -1,7 +1,7 @@
-document.addEventListener('click',event=>{const menu=document.querySelector('.case-menu');if(menu&&!menu.contains(event.target))menu.open=false;if(event.target.closest('.case-links a'))menu.open=false;});
+document.addEventListener('click',event=>{const menu=document.querySelector('.case-menu');if(menu&&!menu.contains(event.target))menu.open=false;if(event.target.closest('.case-links a'))menu.open=false;const captureLink=event.target.closest('a[href*="node-id=148-7470"]');if(captureLink){event.preventDefault();location.href='capturepro.html';}const moniepointLink=event.target.closest('a[href*="node-id=128-609"]');if(moniepointLink){event.preventDefault();location.href='moniepoint.html';}});
 document.addEventListener('keydown',event=>{if(event.key==='Escape')document.querySelectorAll('details[open]').forEach(el=>el.open=false);});
 document.querySelectorAll('[data-motion="tools-track"]').forEach(button=>{button.addEventListener('click',()=>{const track=document.querySelector('.tools-track');const paused=track.classList.toggle('is-paused');button.textContent=paused?'Play':'Pause';button.setAttribute('aria-label',(paused?'Play':'Pause')+' tool animation');button.setAttribute('aria-pressed',String(paused));});});
-{
+if(document.querySelector('.hero-portrait img')){
   const portrait=document.querySelector('.hero-portrait img');
   const button=document.querySelector('[data-hero-motion]');
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
@@ -24,7 +24,7 @@ document.querySelectorAll('[data-motion="tools-track"]').forEach(button=>{button
   loadAnimation();
 }
 document.querySelectorAll('.faq-list details').forEach(detail=>detail.addEventListener('toggle',()=>{if(detail.open)document.querySelectorAll('.faq-list details').forEach(other=>{if(other!==detail)other.open=false});}));
-{
+if(document.querySelector('.testimonial-window')){
   const carousel=document.querySelector('.testimonial-window');
   const track=carousel.querySelector('.testimonial-track');
   const control=carousel.querySelector('[data-motion="testimonial-track"]');
@@ -101,5 +101,5 @@ document.querySelectorAll('.faq-list details').forEach(detail=>detail.addEventLi
 }
 if(location.hostname==='127.0.0.1'||location.hostname==='localhost'){
   let lastContent='';
-  setInterval(async()=>{if(document.hidden)return;try{const response=await fetch('/index.html',{cache:'no-store'});if(!response.ok)return;const content=await response.text();if(lastContent&&content!==lastContent)location.reload();lastContent=content;}catch{}},2000);
+  setInterval(async()=>{if(document.hidden)return;try{const response=await fetch(location.pathname==='/'?'/index.html':location.pathname,{cache:'no-store'});if(!response.ok)return;const content=await response.text();if(lastContent&&content!==lastContent)location.reload();lastContent=content;}catch{}},2000);
 }

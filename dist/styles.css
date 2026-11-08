@@ -19,3 +19,22 @@
 .photo-top{object-position:50% 30.785%;border-radius:24px!important}.photo-bottom{object-position:50% 30.384%;border-radius:24px!important}.capturepro-image{aspect-ratio:632/421.33}.capturepro-image img{width:100%;height:100%;object-fit:contain}.avatar{width:52px;height:52px;position:relative;overflow:hidden;border-radius:50%;flex:none}.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.avatar img[src$="1eff2.png"]{width:128.12%;height:277.43%;left:-13.67%;top:-98.08%;max-width:none}.avatar img[src$="33ece.png"]{width:136.09%;height:247.02%;left:-18.21%;top:-74.38%;max-width:none}@media(max-width:900px){.testimonial-window{height:auto}.testimonial-track{align-items:stretch}.review{height:auto;min-height:356px}.review figcaption{margin-top:auto}}
 .hero-portrait{display:block;aspect-ratio:720/446}.hero-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero-motion-toggle{bottom:16px;right:0}.hero-inner:hover .hero-motion-toggle,.hero-motion-toggle:focus-visible{opacity:1}.motion-toggle,.hero-motion-toggle{display:none!important}
 .testimonial-track{animation:none;transform:none!important}.testimonial-window{overflow-x:auto;scroll-behavior:auto;overscroll-behavior-x:contain;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;padding-bottom:12px;height:auto;position:relative}.testimonial-window::-webkit-scrollbar{display:none;width:0;height:0}.testimonial-window.is-dragging{cursor:grabbing;user-select:none}.testimonial-window .motion-toggle{position:sticky;display:block;left:calc(100% - 64px);bottom:0;margin-top:4px;height:24px;line-height:14px;padding:4px 12px}.testimonial-window:focus-visible{outline:2px solid #b8dcc8;outline-offset:6px}.testimonial-window:hover .motion-toggle,.testimonial-window:focus-within .motion-toggle{opacity:1}.testimonial-track .review{height:auto;min-height:356px}@media(prefers-reduced-motion:reduce){.testimonial-window .motion-toggle{display:none}}
+
+/* The Station card */
+.project-station{background:#6d0107;color:#f3eee9;min-height:600px}
+.project-station .button{background:#f3eee9}.project-station .project-summary p{color:#f3e4e1}
+.project-station .station-mini{display:block;width:48px;height:auto;margin-bottom:24px;background:#f3eee9;border-radius:12px;padding:8px;box-sizing:content-box}
+.project-station .station-mini .st-t{fill:#111}.project-station .station-mini .st-s{fill:#913334}
+.station-image{position:relative;aspect-ratio:1/0.9;max-width:560px}
+.station-image img{position:absolute;width:68%;height:auto;border-radius:14px;box-shadow:0 30px 60px -24px #000c;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.station-back{top:0;right:2%;transform:rotate(5deg)}
+.station-front{bottom:0;left:2%;transform:rotate(-4deg)}
+.station-image:hover .station-back{transform:rotate(9deg) translate(16px,-10px)}
+.station-image:hover .station-front{transform:rotate(-6deg) translate(-12px,8px) scale(1.02)}
+/* Shared scroll reveal for project cards */
+.js-motion .project-card{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.js-motion .project-card .project-image{transform:translateY(24px) scale(.98);transition:transform 1.1s .12s cubic-bezier(.16,1,.3,1)}
+.js-motion .project-card.is-in{opacity:1;transform:none}
+.js-motion .project-card.is-in .project-image{transform:none}
+@media(prefers-reduced-motion:reduce){.js-motion .project-card,.js-motion .project-card .project-image{opacity:1;transform:none;transition:none}.station-image img{transition:none}}
+@media(max-width:900px){.station-image{max-width:440px}}

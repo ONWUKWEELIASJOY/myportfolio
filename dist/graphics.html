@@ -1,91 +1,244 @@
-<!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Graphic Design — Campaigns &amp; Wall Graphics | Joy Chinonso Elias</title><meta name="description" content="Social campaigns and wall graphics by Joy Chinonso Elias, including Aierth's Find Your Tech Val series."><link rel="icon" href="assets/logo.png" type="image/png"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="graphics.css"><script>document.documentElement.classList.add('js')</script></head>
-<body class="graphics-page"><a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header"><nav class="nav-shell" aria-label="Main navigation"><a class="brand" href="index.html" aria-label="Home"><img src="assets/logo-light.png" width="65" height="41" alt="Joy Chinonso Elias"></a><div class="nav-links"><details class="case-menu"><summary>Case studies <img class="nav-chevron" src="assets/nav-13fff.svg" width="12" height="7" alt=""></summary><div class="case-links"><a href="aierth.html">Aierth Technologies</a><a href="moniepoint.html">Moniepoint Redesign</a><a href="capturepro.html">CapturePRO</a><a href="station.html">The Station Magazine</a></div></details><a href="graphics.html" aria-current="page">Graphic design</a><a href="about.html">About</a><a href="services.html">Services</a><a href="index.html#voice">Voice</a></div></nav></header>
-<main id="main">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphic design, Joy Chinonso Elias</title>
+<meta name="description" content="Campaigns, wall graphics and social systems by Joy Chinonso Elias.">
+<style>
+@font-face{font-family:"Mona";src:url("assets/monasans.woff2") format("woff2");font-weight:200 900;font-stretch:75% 125%;font-display:swap}
+:root{--paper:#F2F2EF;--ink:#000;--graphite:#5B5B57;--rule:#D3D3CE;--o:#FF590D;--b:#173DB7;--pad:clamp(20px,4vw,64px)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:"Mona",system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}img,video{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--b);outline-offset:3px}
+.o{color:var(--o)}.b{color:var(--b)}
+nav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:18px var(--pad);background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.mark{font-weight:800;font-stretch:125%;font-size:20px;letter-spacing:-.02em;text-decoration:none}.mark i{font-style:normal;color:var(--o)}
+.links{display:flex;gap:clamp(14px,2.4vw,32px);align-items:center;list-style:none;font-size:15px}
+.links a{text-decoration:none;font-weight:500}.links a:hover{text-decoration:underline;text-underline-offset:4px}
+.pill{display:inline-flex;padding:10px 18px;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;text-decoration:none!important;font-size:15px;line-height:1;background:none;cursor:pointer;font-family:inherit;color:inherit}
+.pill.solid{background:var(--ink);color:var(--paper)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,1.6vw,24px)}
+header.hero{padding:clamp(80px,11vw,150px) var(--pad) clamp(50px,7vw,90px)}
+.hero h1{grid-column:1/11;font-size:clamp(52px,9vw,156px);line-height:.88;letter-spacing:-.05em;font-weight:860;font-stretch:118%}
+.hero p{grid-column:1/7;font-size:clamp(18px,1.5vw,22px);color:#2a2a28;margin-top:clamp(26px,3.5vw,44px);max-width:40ch}
+.toc{grid-column:8/13;align-self:end;list-style:none;border-top:1px solid var(--rule);margin-top:clamp(26px,3.5vw,44px)}
+.toc a{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);text-decoration:none;font-weight:600}
+.toc a span{color:var(--graphite);font-weight:450;font-size:14px}
+.toc a:hover{color:var(--b)}
+section.p{padding:clamp(80px,10vw,140px) var(--pad);border-top:1px solid var(--rule)}
+.kick{font-size:14px;font-weight:600;color:var(--graphite);margin-bottom:14px}
+h2{font-size:clamp(40px,5.6vw,96px);line-height:.9;letter-spacing:-.045em;font-weight:850;font-stretch:115%}
+.intro{grid-column:1/7}
+.intro p{color:#2a2a28;margin-top:22px;max-width:44ch}
+/* Tech Val: a swipeable stack */
+.deck-wrap{grid-column:8/13;display:flex;flex-direction:column;align-items:center;gap:22px}
+.deck{position:relative;width:min(100%,380px);aspect-ratio:720/1019;touch-action:pan-y}
+.card{position:absolute;inset:0;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -28px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.05);background:#ddd;
+  transform:translate3d(calc(var(--dx,0px)),calc(var(--dy,0px) + var(--d,0)*14px),0) rotate(calc(var(--r,0deg))) scale(calc(1 - var(--d,0)*.045));transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s;cursor:grab;user-select:none}
+.card.drag{transition:none;cursor:grabbing}
+.card img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.card .stamp{position:absolute;top:22px;left:20px;padding:6px 12px;border:3px solid var(--o);color:var(--o);font-weight:850;font-size:22px;border-radius:8px;transform:rotate(-12deg);opacity:var(--like,0);background:rgba(255,255,255,.85)}
+.deck-ctl{display:flex;gap:12px;align-items:center}
+.deck-ctl .count{font-size:14px;color:var(--graphite);min-width:70px;text-align:center}
+.round{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--ink);background:none;cursor:pointer;font-size:20px}
+.round.like{background:var(--ink);color:var(--paper)}
+.round.like span{color:var(--o)}
+.sys{grid-column:1/-1;margin-top:clamp(60px,8vw,110px);display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,1.6vw,24px);align-items:center}
+.sys h3{grid-column:1/5;font-size:clamp(26px,2.4vw,38px);line-height:1;letter-spacing:-.03em;font-weight:780}
+.sys p{grid-column:1/5;color:var(--graphite);margin-top:14px}
+.strip{grid-column:6/13;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:thin}
+.strip img{height:300px;width:auto;border-radius:12px;scroll-snap-align:start;flex:0 0 auto}
+/* walls */
+.walls{grid-column:1/-1;display:grid;gap:clamp(60px,8vw,110px);margin-top:clamp(40px,6vw,80px)}
+.wall{display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,1.6vw,24px);align-items:center}
+.wall figure{grid-column:1/9;position:relative;border-radius:8px;overflow:hidden;background:#ddd}
+.wall:nth-child(even) figure{grid-column:5/13;order:2}
+.wall:nth-child(even) .wt{grid-column:1/5;order:1}
+.wall .wt{grid-column:10/13}
+.wt h3{font-size:clamp(26px,2.4vw,38px);line-height:1;letter-spacing:-.03em;font-weight:780;margin-bottom:14px}
+.wt p{color:var(--graphite);margin-bottom:20px}
+.reveal-word{display:inline-flex;font-weight:850;font-size:clamp(34px,3.6vw,56px);letter-spacing:-.02em;font-stretch:115%;margin:6px 0 18px;line-height:1}
+.reveal-word s{text-decoration:none;position:relative;transition:max-width .7s cubic-bezier(.6,0,.2,1),opacity .5s;display:inline-block;max-width:3ch;overflow:hidden;white-space:pre}
+.reveal-word s::after{content:"";position:absolute;left:0;right:0;top:52%;height:.09em;background:var(--o);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.reveal-word.struck s::after{transform:scaleX(1)}
+.reveal-word.gone s{max-width:0;opacity:0}
+/* station */
+.st{grid-column:1/-1;margin-top:clamp(40px,6vw,70px);display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,1.6vw,24px);align-items:end}
+.st .tiles{grid-column:1/9;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.st .tiles img,.st .tiles video{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}
+.st .wt{grid-column:10/13}
+.go{font-weight:650;text-decoration:none;border-bottom:1.5px solid var(--ink);padding-bottom:2px}
+.go:hover{color:var(--b);border-color:var(--b)}
+.dark{background:#000;color:var(--paper);border-top:0!important}
+.dark h2{grid-column:1/-1;max-width:14ch}
+.dark .row{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:end;margin-top:clamp(36px,5vw,64px)}
+.dark p{color:#A9A9A4;max-width:44ch}
+.dark .email{font-size:clamp(22px,2.6vw,38px);font-weight:700;letter-spacing:-.02em;text-decoration:none;border-bottom:2px solid var(--paper)}
+.dark .else{display:flex;gap:22px;margin-top:16px;font-weight:550}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:22px var(--pad) 40px;background:#000;color:#77776f;font-size:14px;border-top:1px solid #222}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}.rv.in{opacity:1;transform:none}
+@media (max-width:820px){
+  .links li:not(:last-child){display:none}
+  .hero h1,.hero p,.toc,.intro,.deck-wrap,.sys h3,.sys p,.strip,.wall figure,.wall .wt,.wall:nth-child(even) figure,.wall:nth-child(even) .wt,.st .tiles,.st .wt{grid-column:1/-1;order:0}
+  .deck-wrap{margin-top:40px}.strip{margin-top:24px}.wall .wt,.st .wt{margin-top:24px}
+  .strip img{height:220px}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.card,.reveal-word s{transition:none}}
+</style>
+</head>
+<body>
+<nav aria-label="Main">
+  <a class="mark" href="index.html">Chinonso<i>.</i></a>
+  <ul class="links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="graphics.html" style="text-decoration:underline;text-underline-offset:4px">Graphic design</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="Joy-Chinonso-Elias-CV.pdf" download="Joy-Chinonso-Elias-CV.pdf">CV</a></li>
+    <li><a class="pill solid" href="#contact">Get in touch</a></li>
+  </ul>
+</nav>
 
-<section class="gx-hero gx-shell">
-  <p class="gx-kicker" data-reveal>Graphic design · Campaigns · Environmental</p>
-  <h1 data-reveal>Campaigns, <strong>not just posters.</strong></h1>
-  <p class="gx-lede" data-reveal>Every graphic I make has a job: get the swipe, explain the offer, or change how a room feels. Here is how a few of those ideas were built.</p>
-  <nav class="gx-index" aria-label="Projects on this page" data-reveal>
-    <a href="#techval"><b>01</b> Find Your Tech Val <span>Social campaign · Aierth</span></a>
-    <a href="#walls"><b>02</b> Walls that talk back <span>Wall graphics · Aierth</span></a>
-    <a href="station.html"><b>03</b> The Station Magazine <span>Brand refresh · Full case study →</span></a>
-  </nav>
-</section>
+<main>
+<header class="hero grid">
+  <h1>Campaigns, not just posters<span class="o">.</span></h1>
+  <p>Every graphic I make has one job: get the swipe, explain the offer, or change how a room feels. Here is how a few of those ideas were built.</p>
+  <ol class="toc">
+    <li><a href="#techval">Find Your Tech Val <span>Social campaign, Aierth</span></a></li>
+    <li><a href="#walls">Walls that talk back <span>Wall graphics, Aierth</span></a></li>
+    <li><a href="#station">The Station Magazine <span>Social system</span></a></li>
+  </ol>
+</header>
 
-<section class="gx-techval" id="techval" aria-labelledby="techval-title">
-  <div class="gx-shell gx-tv-grid">
-    <div class="gx-tv-copy">
-      <p class="gx-label" data-reveal>01 · Social campaign for Aierth Technologies</p>
-      <h2 id="techval-title" data-reveal>Find Your Tech Val</h2>
-      <p data-reveal>For Aierth's Valentine cohort, I turned course selection into a dating app. Instead of a list of programmes, each tech track became a personality you could "match" with: The Builder, The Genius, The Protective One.</p>
-      <p data-reveal>The series borrows the language people already know from dating apps (<em>Swipe Right</em>, <em>If you…</em>, <em>Your match is…</em>) so choosing a career path felt personal, playful and easy to share.</p>
-      <p class="gx-try" data-reveal>Try it: swipe right, drag the card, or pick a personality.</p>
-      <div class="gx-chips" role="list" data-reveal></div>
+<section class="p grid" id="techval" aria-labelledby="tv-h">
+  <div class="intro rv">
+    <p class="kick">Social campaign for Aierth Technologies</p>
+    <h2 id="tv-h">Find Your Tech Val<span class="b">.</span></h2>
+    <p>For Aierth's Valentine cohort, I turned course selection into a dating app. Instead of a list of programmes, each tech track became a personality you could match with: The Builder, The Genius, The Protective One.</p>
+    <p>The series borrows language people already know from dating apps (Swipe right, If you…, Your match is…), so choosing a career path felt personal, playful and easy to share.</p>
+  </div>
+  <div class="deck-wrap rv">
+    <div class="deck" id="deck" aria-label="Find Your Tech Val posters. Drag a card, or use the buttons.">
     </div>
-    <div class="gx-deck-wrap" data-reveal>
-      <div class="gx-deck" data-deck aria-roledescription="card stack" aria-label="Find Your Tech Val posters"></div>
-      <div class="gx-deck-ui">
-        <button class="gx-btn gx-btn-ghost" data-back aria-label="Previous poster">↺ Back</button>
-        <p class="gx-count" aria-live="polite"><span data-now>1</span> / <span data-total>11</span></p>
-        <button class="gx-btn gx-btn-love" data-swipe aria-label="Swipe right to the next poster">♥ Swipe right</button>
-      </div>
+    <div class="deck-ctl">
+      <button class="round" id="back" aria-label="Previous poster">↺</button>
+      <span class="count" id="count">1 / 11</span>
+      <button class="round like" id="like" aria-label="Swipe right"><span>♥</span></button>
     </div>
   </div>
-
-  <div class="gx-shell gx-tv-system">
-    <div class="gx-system-head" data-reveal>
-      <p class="gx-label">The system</p>
-      <h3>One layout, ten personalities.</h3>
-      <p>Every poster shares the same grid: the name in coral, a navy "If you…" block, the match line, and the robot mascot in a new pose. Only the gradient and the props change, so the series reads as one campaign in a feed while each post still feels new.</p>
+  <div class="sys rv">
+    <h3>One grid, ten personalities<span class="o">.</span></h3>
+    <p>Every poster shares the same layout: the name, the "If you…" block, the match line and the robot mascot in a new pose. Only the gradient and props change, so the series reads as one campaign in a feed while each post still feels new.</p>
+    <div class="strip" tabindex="0" aria-label="All Tech Val posters">
+      <img src="assets/techval-builder.webp" alt="The Builder" loading="lazy"><img src="assets/techval-genius.webp" alt="The Genius" loading="lazy"><img src="assets/techval-protective.webp" alt="The Protective One" loading="lazy"><img src="assets/techval-creator.webp" alt="The Creator" loading="lazy"><img src="assets/techval-leader.webp" alt="The Leader" loading="lazy"><img src="assets/techval-romantic.webp" alt="The Romantic" loading="lazy"><img src="assets/techval-silent.webp" alt="The Silent One" loading="lazy"><img src="assets/techval-strategist.webp" alt="The Strategist" loading="lazy"><img src="assets/techval-trendsetter.webp" alt="The Trendsetter" loading="lazy">
     </div>
-    <div class="gx-fan" data-fan aria-hidden="true"></div>
   </div>
 </section>
 
-<section class="gx-walls" id="walls" aria-labelledby="walls-title">
-  <div class="gx-shell">
-    <div class="gx-walls-head">
-      <p class="gx-label" data-reveal>02 · Wall graphics for Aierth Technologies</p>
-      <h2 id="walls-title" data-reveal>Walls that talk back.</h2>
-      <p data-reveal>Large-format pieces for Aierth's learning space. Students see a wall every day, so each one needed an idea that rewards a second look.</p>
-    </div>
-
-    <figure class="gx-wall gx-dontquit" data-dontquit data-reveal>
-      <div class="gx-wall-frame">
-        <img src="assets/wall-dont-quit.webp" alt="Orange wall graphic reading DON'T QUIT, with the N'T and QU struck through so it also reads DO IT, above a shelf of books" width="1600" height="800" loading="lazy">
-        <span class="gx-mask gx-mask-a"></span>
-        <span class="gx-mask gx-mask-b"></span>
-      </div>
-      <figcaption>
+<section class="p grid" id="walls" aria-labelledby="w-h">
+  <div class="intro rv">
+    <p class="kick">Wall graphics for Aierth Technologies</p>
+    <h2 id="w-h">Walls that talk back<span class="o">.</span></h2>
+    <p>Large-format pieces for Aierth's learning space. Students see a wall every day, so each one needed an idea that rewards a second look.</p>
+  </div>
+  <div class="walls">
+    <div class="wall rv">
+      <figure><img src="assets/wall-dont-quit.webp" alt="Orange wall graphic reading DON'T QUIT, with letters struck through so it also reads DO IT" loading="lazy"></figure>
+      <div class="wt">
         <h3>Read it twice.</h3>
-        <p>At a glance it says <b>Don't Quit</b>. The strike-throughs hide a second message: remove the crossed-out letters and it reads <b class="gx-doit">DO IT</b>. Encouragement first, then a nudge to act.</p>
-        <button class="gx-btn gx-btn-ghost" data-replay>Show me again</button>
-      </figcaption>
-    </figure>
-
-    <figure class="gx-wall gx-best" data-reveal>
-      <div class="gx-wall-frame gx-parallax" data-parallax>
-        <img src="assets/wall-best-project.webp" alt="White wall graphic: 'The best project you will ever work on is you', with a tie forming the O, cracks in the wall, and a word-tree of motivational phrases growing from a bookshelf" width="1575" height="788" loading="lazy">
+        <span class="reveal-word" id="rw" aria-label="Don't quit becomes do it">DO<s>N'T</s>&nbsp;<s>QU</s>IT</span>
+        <p>At a glance it says Don't Quit. The strike-throughs hide a second message: remove the crossed-out letters and it reads DO IT. Encouragement first, then a nudge to act.</p>
+        <button class="pill" id="rwBtn" type="button">Show me again</button>
       </div>
-      <figcaption>
-        <h3>Growth, drawn literally.</h3>
-        <p>The headline speaks to career ambition, with a tie standing in for the "O" in "you". The wall cracks open, and a tree of encouragement grows out of the bookshelf, its roots reaching below the shelf. Learning is what it grows from.</p>
-      </figcaption>
-    </figure>
+    </div>
+    <div class="wall rv">
+      <figure><img src="assets/wall-best-project.webp" alt="White wall graphic: The best project you will ever work on is you, with a tie forming the O and a word-tree growing from a bookshelf" loading="lazy"></figure>
+      <div class="wt">
+        <h3>Growth, drawn literally<span class="b">.</span></h3>
+        <p>The headline speaks to career ambition, with a tie standing in for the O in "you". The wall cracks open and a tree of encouragement grows out of the bookshelf, its roots reaching below the shelf. Learning is what it grows from.</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="gx-shell gx-next">
-  <h2 data-reveal>Want the full story behind a brand?</h2>
-  <a class="gx-next-card" href="station.html" data-reveal>
-    <span>The Station Magazine</span>
-    <h3>Kept the recognition. Removed the noise.</h3>
-    <p>A logo refresh, type direction and the carousel templates a Lagos culture magazine posts with every day.</p>
-    <b>Read case study</b>
-  </a>
+<section class="p grid" id="station" aria-labelledby="s-h">
+  <div class="intro rv">
+    <p class="kick">Social system for The Station Magazine</p>
+    <h2 id="s-h">Built to post every day<span class="o">.</span></h2>
+    <p>A library of templates a Lagos culture magazine fills in daily: weekend guides, news, people. The frame, type and monogram stay fixed, so the feed always looks like The Station.</p>
+  </div>
+  <div class="st rv">
+    <div class="tiles">
+      <img src="assets/station-weekend-1.webp" alt="Weekend in Lagos cover post" loading="lazy">
+      <img src="assets/station-news-poster.webp" alt="Station news post" loading="lazy">
+      <img src="assets/station-weekend-2.webp" alt="Weekend in Lagos listing post" loading="lazy">
+    </div>
+    <div class="wt">
+      <p>The full story, from the logo refresh to the templates, is in the case study.</p>
+      <a class="go" href="station.html">Read the case study</a>
+    </div>
+  </div>
 </section>
 
-<footer class="footer content-shell" id="contact"><div class="footer-card"><div class="connect"><div><h2>Let's connect</h2><p>Tell me what you are building, the problem you need to solve, and where you need design support.<br>Open to Opportunities worldwide</p><a class="button " href="contact.html">Contact me</a></div><img class="footer-logo" src="assets/logo-large.png" width="286" height="163" alt="Joy Chinonso Elias" loading="lazy"></div><div class="footer-columns"><div class="footer-nav"><h3>Navigation</h3><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="graphics.html">Graphic design</a><a href="mailto:joyelias199@gmail.com?subject=Resume%20request">Resume</a></div><div class="footer-nav"><h3>Case studies</h3><a href="aierth.html">Aierth</a><a href="moniepoint.html">Moniepoint Redesign</a><a href="aierth.html#chimamanda">Chimamanda AI Assistant</a><a href="capturepro.html">CapturePRO</a><a href="station.html">The Station Magazine</a></div><div class="socials"><h3>Elsewhere</h3><a class="social social-0" href="https://ng.linkedin.com/in/chinonso-elias77432?trk=profile-badge" target="_blank" rel="noopener noreferrer"><span class="social-icon"><img src="assets/footer-73ff0.svg" alt="" width="32" height="30" loading="lazy"></span>LinkedIn<img src="assets/footer-a7ccc.svg" alt="" class="social-arrow" width="15" height="15"></a><a class="social social-1" href="https://medium.com/@chinonsoelias" target="_blank" rel="noopener noreferrer"><span class="social-icon"><img src="assets/footer-dfbc6.svg" alt="" width="32" height="30" loading="lazy"></span>Medium<img src="assets/footer-a7ccc.svg" alt="" class="social-arrow" width="15" height="15"></a><a class="social social-2" href="https://github.com/ONWUKWEELIASJOY" target="_blank" rel="noopener noreferrer"><span class="social-icon"><img src="assets/footer-7d0e3.png" alt="" width="32" height="30" loading="lazy"></span>Github<img src="assets/footer-a7ccc.svg" alt="" class="social-arrow" width="15" height="15"></a></div></div></div><div class="copyright"><span>2026</span><p>Designing thoughtful products, intuitive experiences, and distinctive brands that support meaningful growth.</p></div></footer></main><script src="app.js" defer></script><script src="graphics.js" defer></script></body></html>
+<section class="p dark grid" id="contact" aria-labelledby="ct-h">
+  <h2 id="ct-h">Need a campaign people stop for<span class="o">?</span></h2>
+  <div class="row">
+    <p>Open to product design roles, remote or hybrid, worldwide, and to freelance and contract brand work.</p>
+    <div>
+      <a class="email" href="mailto:joyelias199@gmail.com">joyelias199@gmail.com</a>
+      <div class="else"><a href="https://calendar.app.google/GkufeMipmunsUhBU8">Book a call</a><a href="https://www.linkedin.com/in/chinonso-elias77432/">LinkedIn</a><a href="index.html">Home</a></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer><span>Joy Chinonso Elias, designed and built in Lagos, 2026</span><a href="index.html">Back to home</a></footer>
+
+<script>
+(function(){
+  /* reveal on scroll */
+  const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12}):null;
+  document.querySelectorAll('.rv').forEach(e=>io?io.observe(e):e.classList.add('in'));
+
+  /* Tech Val deck */
+  const files=['intro','builder','genius','protective','creator','leader','romantic','silent','strategist','trendsetter','found'];
+  const names=['Find your Tech Val','The Builder','The Genius','The Protective One','The Creator','The Leader','The Romantic','The Silent One','The Strategist','The Trendsetter','Your match is found'];
+  const deck=document.getElementById('deck'), count=document.getElementById('count');
+  let i=0;
+  function render(){
+    deck.innerHTML='';
+    for(let k=Math.min(files.length-1,i+2);k>=i;k--){
+      const c=document.createElement('div'); c.className='card'; c.style.setProperty('--d',k-i);
+      c.innerHTML=`<img src="assets/techval-${files[k]}.webp" alt="${names[k]}"><span class="stamp">MATCH</span>`;
+      deck.appendChild(c);
+    }
+    count.textContent=(i+1)+' / '+files.length;
+    bind(deck.lastElementChild);
+  }
+  function fly(card,dir){
+    card.style.setProperty('--dx',(dir*560)+'px'); card.style.setProperty('--r',(dir*24)+'deg'); card.style.opacity=0;
+    setTimeout(()=>{i=(i+1)%files.length;render()},320);
+  }
+  function bind(card){
+    let sx=0,sy=0,dx=0,dy=0,down=false;
+    card.addEventListener('pointerdown',e=>{down=true;sx=e.clientX;sy=e.clientY;card.classList.add('drag');card.setPointerCapture(e.pointerId)});
+    card.addEventListener('pointermove',e=>{if(!down)return;dx=e.clientX-sx;dy=e.clientY-sy;
+      card.style.setProperty('--dx',dx+'px');card.style.setProperty('--dy',dy*.3+'px');card.style.setProperty('--r',(dx/18)+'deg');card.style.setProperty('--like',Math.max(0,Math.min(1,dx/120)))});
+    const up=()=>{if(!down)return;down=false;card.classList.remove('drag');
+      if(Math.abs(dx)>110)fly(card,Math.sign(dx));else{['--dx','--dy','--r','--like'].forEach(v=>card.style.removeProperty(v))}dx=dy=0};
+    card.addEventListener('pointerup',up);card.addEventListener('pointercancel',up);
+  }
+  document.getElementById('like').addEventListener('click',()=>{const c=deck.lastElementChild;c.style.setProperty('--like',1);fly(c,1)});
+  document.getElementById('back').addEventListener('click',()=>{i=(i-1+files.length)%files.length;render()});
+  deck.addEventListener('keydown',e=>{if(e.key==='ArrowRight')document.getElementById('like').click();if(e.key==='ArrowLeft')document.getElementById('back').click()});
+  deck.tabIndex=0; render();
+
+  /* Don't Quit to Do It */
+  const rw=document.getElementById('rw');
+  function play(){rw.classList.remove('struck','gone');void rw.offsetWidth;setTimeout(()=>rw.classList.add('struck'),400);setTimeout(()=>rw.classList.add('gone'),1300)}
+  document.getElementById('rwBtn').addEventListener('click',play);
+  if(io){const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){play();o.disconnect()}},{threshold:.6});o.observe(rw)}else play();
+})();
+</script>
+</body>
+</html>

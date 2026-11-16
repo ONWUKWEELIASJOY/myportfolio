@@ -249,7 +249,7 @@ body.night .site-nav .pill.solid{background:var(--paper);color:#000;border-color
 .work-intro{padding:28vh var(--pad) 10vh;color:var(--paper)}
 .work-intro h2{font-size:clamp(40px,6vw,104px);line-height:.95;letter-spacing:-.04em;font-weight:800;font-stretch:112%;max-width:16ch;opacity:var(--wi,1);transform:translateY(calc((1 - var(--wi,1))*40px))}
 
-.ch{height:175vh;position:relative;--a:1;--b:1;--d:0;color:var(--paper)}
+.ch{height:175vh;position:relative;--a:1;--b:1;--d:0;--k1:1;--k2:1;color:var(--paper)}
 .ch-in{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;padding:clamp(80px,12vh,130px) var(--pad) clamp(40px,7vh,72px);
   display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto 1fr;column-gap:clamp(12px,1.6vw,24px);perspective:1600px}
 .ch-t{grid-column:1/-1;grid-row:1;font-size:clamp(52px,8.4vw,150px);line-height:.9;letter-spacing:-.045em;font-weight:820;font-stretch:115%;position:relative;z-index:2}
@@ -261,6 +261,22 @@ body.night .site-nav .pill.solid{background:var(--paper);color:#000;border-color
   opacity:calc(.15 + var(--a)*.85);transform-origin:50% 100%;will-change:transform}
 .dev::before{content:"";position:absolute;left:10%;right:10%;top:30%;bottom:-10%;background:radial-gradient(closest-side,var(--glow),transparent);filter:blur(40px);opacity:calc(var(--a)*.45);z-index:-1}
 .dev img{max-width:100%;max-height:calc(100svh - clamp(80px,12vh,130px) - clamp(52px,8.4vw,150px)*1.9 - 70px);width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
+/* showcase kits: the devices assemble themselves on scroll */
+.rig{--H:calc(100svh - clamp(80px,12vh,130px) - clamp(52px,8.4vw,150px)*1.9 - 70px);position:relative;perspective:1600px;filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
+.dev .rig img{max-height:none;max-width:none;filter:none;display:block}
+.lap{perspective-origin:50% 93.6%;perspective:1400px;aspect-ratio:1600/754;width:min(64vw,calc(var(--H)*2.122))}
+.dev .rig .lap-base{position:absolute;left:0;width:76.6%;top:93.6%;height:6.4%;z-index:3}
+.lap-lid{position:absolute;left:6.19%;width:68%;top:0;height:93.6%;z-index:2;transform-origin:50% 100%;transform-style:preserve-3d;
+  transform:rotateX(calc((1 - var(--k1))*-90deg))}
+.dev .lap-lid img{width:100%;height:100%;max-width:none;backface-visibility:hidden;filter:brightness(calc(.25 + var(--k1)*.75))}
+.lap-lid i{position:absolute;inset:0;border-radius:3% 3% 0 0;background:linear-gradient(180deg,#d9dadf,#a9abb3 70%,#8d9097);transform:rotateX(180deg);backface-visibility:hidden}
+.dev .rig .lap-ph{position:absolute;left:77.44%;width:22.56%;top:0;height:100%;z-index:1;
+  transform:translateX(calc((1 - var(--k2))*-115%)) rotate(calc((1 - var(--k2))*-9deg)) translateY(calc((1 - var(--k2))*6%));opacity:calc(var(--k2)*1.6)}
+.mpk{aspect-ratio:1368/854;width:min(64vw,calc(var(--H)*1.602))}
+.dev .mpk img{position:absolute;top:0;height:100%}
+.dev .rig .mp1{left:0;width:32.53%;transform:translateX(calc((1 - var(--k1))*104%)) rotate(calc((1 - var(--k1))*-7deg + var(--k1)*-3deg*(1 - var(--k2)))) scale(calc(.92 + var(--k1)*.08))}
+.dev .rig .mp3{left:67.32%;width:32.68%;transform:translateX(calc((1 - var(--k1))*-103%)) rotate(calc((1 - var(--k1))*7deg + var(--k1)*3deg*(1 - var(--k2)))) scale(calc(.92 + var(--k1)*.08))}
+.dev .rig .mp2{left:32.53%;width:34.8%;z-index:2;transform:translateY(calc((1 - var(--k1))*8% - var(--k2)*4% + var(--k2)*var(--d)*4%)) scale(calc(1 + var(--k2)*.04 - var(--k2)*var(--d)*.04))}
 .fan{grid-template-columns:1fr}
 .fan img{grid-area:1/1;width:min(34vw,52vh);border-radius:18px;box-shadow:0 50px 90px -30px rgba(0,0,0,.8);filter:none}
 .fan img:nth-child(1){transform:translateX(calc(var(--a)*-62%)) rotate(calc(var(--a)*-8deg)) scale(.9)}
@@ -1054,7 +1070,11 @@ body.night .bk{background:var(--bn)}
 <article class="ch" style="--glow:#F28C28" aria-labelledby="c1">
   <div class="ch-in">
     <h3 class="ch-t" id="c1"><span><i>Aierth</i></span><span><i>Technologies</i></span></h3>
-    <div class="dev"><img src="assets/aierth.webp" alt="Aierth Technologies website on a laptop and a phone" loading="lazy"></div>
+    <div class="dev"><div class="rig lap" role="img" aria-label="Aierth Technologies website on a laptop and a phone">
+      <img class="lap-ph" src="assets/ai-phone.webp" alt="" loading="lazy">
+      <div class="lap-lid"><img src="assets/ai-lid.webp" alt="" loading="lazy"><i></i></div>
+      <img class="lap-base" src="assets/ai-base.webp" alt="" loading="lazy">
+    </div></div>
     <div class="ch-txt">
       <p class="kick">Brand and product, 2025</p>
       <p>A tech-training idea that needed to become a company people trust. I built the brand, the website and the learning product as one system.</p>
@@ -1067,7 +1087,11 @@ body.night .bk{background:var(--bn)}
 <article class="ch" style="--glow:#2563EB" aria-labelledby="c2">
   <div class="ch-in">
     <h3 class="ch-t" id="c2"><span><i>Moniepoint,</i></span><span><i>rethought</i></span></h3>
-    <div class="dev"><img src="assets/moniepoint.webp" alt="Redesigned Moniepoint screens: settings, transactions and insights" loading="lazy"></div>
+    <div class="dev"><div class="rig mpk" role="img" aria-label="Redesigned Moniepoint screens: settings, transactions and insights">
+      <img class="mp1" src="assets/mp-ph1.webp" alt="" loading="lazy">
+      <img class="mp3" src="assets/mp-ph3.webp" alt="" loading="lazy">
+      <img class="mp2" src="assets/mp-ph2.webp" alt="" loading="lazy">
+    </div></div>
     <div class="ch-txt">
       <p class="kick">UX research, independent concept, 2026</p>
       <p>Business banking for Nigerian merchants, redesigned around one question on every screen: what matters right now?</p>
@@ -1567,6 +1591,8 @@ body.night .bk{background:var(--bn)}
       c.style.setProperty('--t',ease(r(e,.25,.8)).toFixed(3));
       c.style.setProperty('--t2',ease(r(e,.38,.92)).toFixed(3));
       c.style.setProperty('--a',ease(cl(r(e,.35,1)*.55+r(p,0,.28)*.45)).toFixed(3));
+      c.style.setProperty('--k1',ease(r(p,.02,.36)).toFixed(3));
+      c.style.setProperty('--k2',ease(r(p,.22,.5)).toFixed(3));
       const bb=ease(r(p,.14,.38));c.style.setProperty('--b',bb.toFixed(3));
       c.style.setProperty('--d',r(p,.4,1).toFixed(3));
       if(bb>.6)c.querySelectorAll('.stat b[data-count]').forEach(count);

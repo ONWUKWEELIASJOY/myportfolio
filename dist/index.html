@@ -868,6 +868,33 @@ body.night .bk{background:var(--bn)}
 .book-touch .bk-pin>.book{position:relative!important;top:0!important;margin:28px auto 0!important}
 .book-touch .bk-nav{display:flex!important;position:relative!important;top:0!important;margin:26px 0 70px!important;justify-content:center;align-items:center;gap:16px;font-size:14px}
 .book-touch .bk-swipe{display:block;text-align:center;font-size:13px;margin-top:14px}
+
+/* the cover is the one big burst of colour on the site */
+.bk .cover{background:#FF590D!important;background-image:linear-gradient(90deg,rgba(0,0,0,.28) 0,rgba(255,255,255,.14) 2.5%,rgba(0,0,0,.06) 4%,transparent 9%),radial-gradient(120% 80% at 85% 0%,rgba(255,255,255,.2),transparent 60%)!important;color:#fff}
+.bk .cover .c-mark i{color:#000!important}
+.bk .c-title,.bk .c-title span{color:#fff!important}.bk .c-title span+span{color:transparent!important;-webkit-text-stroke:1.4px #fff}
+.bk .c-yrs,.bk .c-hint{color:#FFE3D4!important}
+
+/* ───────── a book you could pick up ───────── */
+.bk .stf__block{transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .6s;transform-style:preserve-3d;will-change:transform}
+.bk .book.lifted .stf__block{filter:drop-shadow(0 70px 60px rgba(0,0,0,.3)) drop-shadow(0 18px 18px rgba(0,0,0,.18))}
+/* page thickness: a stack of paper edges along the fore-edge and the foot */
+.bk .book::before,.bk .book::after{content:"";position:absolute;pointer-events:none;z-index:0;transition:opacity .4s}
+.bk .book::after{right:-7px;top:6px;bottom:-1px;width:8px;border-radius:0 3px 3px 0;
+  background:repeating-linear-gradient(90deg,#f7f5ef 0 1px,#dcd8cf 1px 1.6px);box-shadow:2px 0 3px rgba(0,0,0,.12)}
+.bk .book::before{left:4px;right:-6px;bottom:-7px;height:8px;border-radius:0 0 3px 3px;
+  background:repeating-linear-gradient(180deg,#f7f5ef 0 1px,#dcd8cf 1px 1.6px);box-shadow:0 2px 3px rgba(0,0,0,.12)}
+.bk .book.is-closed::before{left:50%}
+.bk .book.at-end::after{right:auto;left:-7px;border-radius:3px 0 0 3px}
+.bk .book.at-end::before{left:4px;right:50%}
+/* cover: linen texture, embossed title, soft-touch sheen */
+.bk .cover::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.bk .cover::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,calc(.18 * var(--sheen,0))) 48%,transparent 62%);background-size:220% 100%;background-position:calc(50% + var(--sx,0) * 30%) 0}
+.bk .c-title span:first-child{text-shadow:0 1px 0 rgba(255,255,255,.35),0 -1px 0 rgba(0,0,0,.18)}
+.bk .c-title span+span{filter:drop-shadow(0 1px 0 rgba(255,255,255,.3))}
+.bk .book:hover{cursor:grab}
 </style>
 </head>
 <body>
@@ -1649,6 +1676,8 @@ body.night .bk{background:var(--bn)}
   size(); pf.on('changeOrientation',()=>{size()});
   let syncing=false;
   function target(){const b=pin.getBoundingClientRect(),tot=pin.offsetHeight-innerHeight;return Math.round(cl(-b.top/tot,0,1)*steps())}
+  function centre(){const i=pf.getCurrentPageIndex(),last=i>=P-1;el.style.transition='translate .8s cubic-bezier(.4,0,.2,1)';const closed=!touch&&!portrait()&&(i===0||last);el.style.translate=closed?(i===0?'-25% 0':'25% 0'):'0 0';el.classList.toggle('is-closed',i===0||last);el.classList.toggle('at-end',last)}
+  pf.on('changeState',centre); pf.on('flip',centre); setTimeout(centre,50);
   function label(){const i=pf.getCurrentPageIndex();where.textContent=(names[i]||'')+', '+(i+1)+' of '+P;prev.disabled=i===0;next.disabled=stepOf(i)>=steps()}
   pf.on('flip',()=>{label();
     if(touch)return;
@@ -1706,6 +1735,29 @@ body.night .bk{background:var(--bn)}
   addEventListener('wheel',dismiss,{passive:true,once:true}); addEventListener('touchmove',dismiss,{passive:true,once:true});
   n.addEventListener('click',()=>{dismiss();(window.__lenis?__lenis.scrollTo(innerHeight*.9,{duration:1.6}):scrollTo({top:innerHeight*.9,behavior:'smooth'}))});
   setTimeout(()=>{if(!gone){n.classList.remove('in');n.classList.add('out');root.style.setProperty('--hb',1);gone=true}},9000);
+})();
+</script>
+
+<script>
+/* tilt and lift: the book leans toward your cursor and rises off the desk */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!matchMedia('(pointer:fine)').matches)return;
+  const book=document.getElementById('book'); if(!book)return;
+  let rx=0,ry=0,tx=0,ty=0,lift=0,tl=0,raf=0;
+  function tick(){
+    rx+=(tx-rx)*.12; ry+=(ty-ry)*.12; lift+=(tl-lift)*.12;
+    const blk=book.querySelector('.stf__block');
+    if(blk) blk.style.transform=`perspective(2200px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(${(-10*lift).toFixed(1)}px)`;
+    book.style.setProperty('--sheen',lift.toFixed(3)); book.style.setProperty('--sx',(ry/6).toFixed(3));
+    if(Math.abs(tx-rx)+Math.abs(ty-ry)+Math.abs(tl-lift)>.01) raf=requestAnimationFrame(tick); else raf=0;
+  }
+  const go=()=>{if(!raf)raf=requestAnimationFrame(tick)};
+  book.addEventListener('pointermove',e=>{
+    const r=book.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    tx=-y*7; ty=x*9; tl=1; book.classList.add('lifted'); go();
+  });
+  book.addEventListener('pointerleave',()=>{tx=0;ty=0;tl=0;book.classList.remove('lifted');go()});
+  book.addEventListener('pointerdown',()=>{tl=.4;go()});
 })();
 </script>
 </body>

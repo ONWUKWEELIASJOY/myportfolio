@@ -856,6 +856,18 @@ body.night .bk{background:var(--bn)}
 .ion-tx em{font-style:normal;font-weight:450;font-size:12px;color:#6b6b68}
 .ion-tx span{font-size:14px;color:#1d1d1b}
 @media (prefers-reduced-motion:reduce){.ios-note{display:none}}
+
+/* ───────── the book sits on a light desk so it reads as an object ───────── */
+.bk{background:radial-gradient(60% 55% at 50% 52%,#FBFAF7 0%,#ECEAE4 60%,#E2E0D9 100%)!important;color:#000!important}
+.bk .bk-head h2{color:#000}.bk .bk-head p,.bk #bkWhere{color:#5B5B57!important}
+.bk .bk-nav button{box-shadow:inset 0 0 0 1.5px #000!important;color:#000!important}
+.bk .bk-nav button:hover{background:#000!important;color:#F2F2EF!important}
+.bk .stf__block{filter:drop-shadow(0 50px 45px rgba(0,0,0,.28)) drop-shadow(0 12px 14px rgba(0,0,0,.18))}
+.bk .bk-swipe{color:#5B5B57}
+.book-touch .bk-pin{height:auto!important}
+.book-touch .bk-pin>.book{position:relative!important;top:0!important;margin:28px auto 0!important}
+.book-touch .bk-nav{display:flex!important;position:relative!important;top:0!important;margin:26px 0 70px!important;justify-content:center;align-items:center;gap:16px;font-size:14px}
+.book-touch .bk-swipe{display:block;text-align:center;font-size:13px;margin-top:14px}
 </style>
 </head>
 <body>
@@ -1088,7 +1100,7 @@ body.night .bk{background:var(--bn)}
           <h3 class="c-title"><span>Brand</span><span>Book</span></h3>
           <p class="c-by">Joy Chinonso Elias</p>
           <p class="c-yrs">2022 to 2026</p>
-          <span class="c-hint">Scroll to open</span>
+          <span class="c-hint">Turn the page</span>
         </div></div>
       <div class="page"><div class="pg lp intro">
           <header class="rh"><span>Brand book</span><span>Joy Chinonso Elias</span></header>
@@ -1294,7 +1306,7 @@ body.night .bk{background:var(--bn)}
     </div>
     </div>
     </div>
-    <p class="bk-swipe">Swipe through the book</p>
+    <p class="bk-swipe">Swipe or tap a page corner to turn it</p>
     <div class="bk-nav" aria-label="Book controls">
       <button type="button" id="bkPrev" aria-label="Previous page">Previous</button>
       <span id="bkWhere">Cover</span>
@@ -1492,7 +1504,7 @@ body.night .bk{background:var(--bn)}
   function tick(){
     const vh=innerHeight, vw=innerWidth;
     const z=zone.getBoundingClientRect(), bk=document.querySelector('.bk').getBoundingClientRect();
-    document.body.classList.toggle('night',(z.top<vh*.55&&z.bottom>vh*.45)||(bk.top<vh*.55&&bk.bottom>vh*.45));
+    document.body.classList.toggle('night',(z.top<vh*.55&&z.bottom>vh*.45));
     if(reduce)return;
     const sp=0;
     ws.forEach((s,i)=>{const at=i/ws.length*.8;s.style.setProperty('--o',(.12+.88*r(sp,at,at+.14)).toFixed(3))});
@@ -1615,31 +1627,35 @@ body.night .bk{background:var(--bn)}
 (function(){
   const root=document.documentElement, pin=document.querySelector('.bk-pin'), el=document.getElementById('book');
   const where=document.getElementById('bkWhere'), prev=document.getElementById('bkPrev'), next=document.getElementById('bkNext');
-  const names=['Cover','About','Contents','The Station Magazine','The Station Magazine','Station, in the world','Station, in the world','Aierth Technologies','Aierth Technologies','Ova','Ova','Ova, in the world','Ova, in the world','Ova illustration system','Ova illustration system','Suprviso AI','Suprviso AI','Suprviso, in the world','Suprviso, in the world','The end','Back cover'];
+  const names=['Cover','About','Contents'].concat(Array(4).fill('The Station Magazine'),Array(4).fill('Aierth Technologies'),Array(6).fill('Ova'),Array(4).fill('Suprviso AI'),Array(6).fill('Nnem'),Array(6).fill('Ráchi'),['The end','Back cover']);
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce||!window.St||innerWidth<=820){root.classList.add('book-flat');return}
+  if(reduce||!window.St){root.classList.add('book-flat');return}
+  const touch=innerWidth<=820;
   const pages=[...el.querySelectorAll('.page')], P=pages.length;
   const box=document.querySelector('.bk');
-  const PH=Math.max(360,Math.min(740,innerHeight-250)), PW=Math.round(PH/1.32);
-  const pf=new St.PageFlip(el,{width:PW,height:PH,size:'stretch',minWidth:180,maxWidth:PW,minHeight:240,maxHeight:PH,
+  const PH=touch?Math.round(Math.min(innerWidth*.88*1.32,innerHeight-230)):Math.max(360,Math.min(740,innerHeight-250)), PW=Math.round(PH/1.32);
+  if(touch){el.style.width=PW+'px';el.style.height=PH+'px';el.style.transform='none';}
+  const pf=new St.PageFlip(el,{width:PW,height:PH,size:touch?'fixed':'stretch',minWidth:180,maxWidth:PW,minHeight:240,maxHeight:PH,
     showCover:true,drawShadow:true,maxShadowOpacity:.55,flippingTime:850,usePortrait:true,mobileScrollSupport:false,
     startZIndex:2,autoSize:true,showPageCorners:true,disableFlipByClick:false,swipeDistance:24});
   pf.loadFromHTML(pages); window.__pf=pf;
-  root.classList.add('js-book');
+  root.classList.add(touch?'book-touch':'js-book');
   const cl=(v,a,b)=>Math.min(b,Math.max(a,v));
   const portrait=()=>pf.getOrientation()==='portrait';
   const steps=()=>portrait()?P-1:Math.ceil(P/2);            // number of positions the book can rest at
   const pageOf=k=>portrait()?k:(k===0?0:Math.min(P-1,2*k-1)); // resting position -> first visible page
   const stepOf=p=>portrait()?p:Math.ceil(p/2);
-  function size(){pin.style.height=(steps()*42+100)+'vh'}
+  function size(){if(!touch)pin.style.height=(steps()*42+100)+'vh'}
   size(); pf.on('changeOrientation',()=>{size()});
   let syncing=false;
   function target(){const b=pin.getBoundingClientRect(),tot=pin.offsetHeight-innerHeight;return Math.round(cl(-b.top/tot,0,1)*steps())}
-  function label(){const i=pf.getCurrentPageIndex();where.textContent=names[i]||'';prev.disabled=i===0;next.disabled=stepOf(i)>=steps()}
+  function label(){const i=pf.getCurrentPageIndex();where.textContent=(names[i]||'')+', '+(i+1)+' of '+P;prev.disabled=i===0;next.disabled=stepOf(i)>=steps()}
   pf.on('flip',()=>{label();
+    if(touch)return;
     if(!syncing){const y=yFor(stepOf(pf.getCurrentPageIndex()));syncing=true;window.__lenis?window.__lenis.scrollTo(y,{duration:.9,onComplete:()=>syncing=false}):(scrollTo({top:y,behavior:'smooth'}),setTimeout(()=>syncing=false,900))}});
   function yFor(k){const tot=pin.offsetHeight-innerHeight;return pin.getBoundingClientRect().top+scrollY+tot*(k/steps())+2}
   (function loop(){
+    if(touch)return;
     requestAnimationFrame(loop);
     if(syncing)return;
     const st=pf.getState(); if(st!=='read')return;
@@ -1651,9 +1667,9 @@ body.night .bk{background:var(--bn)}
     setTimeout(()=>{syncing=false},1050);
   })();
   function go(k){const y=yFor(k);window.__lenis?window.__lenis.scrollTo(y,{duration:1.4}):scrollTo({top:y,behavior:'smooth'})}
-  prev.addEventListener('click',()=>go(Math.max(0,stepOf(pf.getCurrentPageIndex())-1)));
-  next.addEventListener('click',()=>go(Math.min(steps(),stepOf(pf.getCurrentPageIndex())+1)));
-  document.querySelectorAll('.ct button').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();go(stepOf(+b.dataset.page))}));
+  prev.addEventListener('click',()=>touch?pf.flipPrev():go(Math.max(0,stepOf(pf.getCurrentPageIndex())-1)));
+  next.addEventListener('click',()=>touch?pf.flipNext():go(Math.min(steps(),stepOf(pf.getCurrentPageIndex())+1)));
+  document.querySelectorAll('.ct button').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();touch?pf.flip(+b.dataset.page):go(stepOf(+b.dataset.page))}));
   label();
 })();
 </script>

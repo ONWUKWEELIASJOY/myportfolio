@@ -895,6 +895,24 @@ body.night .bk{background:var(--bn)}
 .bk .c-title span:first-child{text-shadow:0 1px 0 rgba(255,255,255,.35),0 -1px 0 rgba(0,0,0,.18)}
 .bk .c-title span+span{filter:drop-shadow(0 1px 0 rgba(255,255,255,.3))}
 .bk .book:hover{cursor:grab}
+
+/* ───────── illustrated Joy ───────── */
+.peek{position:fixed;bottom:0;z-index:55;pointer-events:none;--s:0;--side:1}
+.peek.l{left:0}.peek.r{right:0}
+.pk-fig{width:clamp(150px,15vw,230px);transform:translateX(calc((1 - var(--s)) * var(--side) * -110%)) rotate(calc((1 - var(--s)) * var(--side) * -18deg));transform-origin:bottom center;transition:transform .9s cubic-bezier(.2,1.35,.35,1)}
+.peek.r .pk-fig{--side:-1}
+.pk-fig img{width:100%;filter:drop-shadow(0 10px 24px rgba(0,0,0,.25))}
+.peek.on .pk-fig{animation:bob 3.2s ease-in-out .9s infinite}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+.pk-bub{position:absolute;bottom:clamp(170px,19vw,270px);width:max-content;max-width:260px;padding:14px 34px 14px 16px;border-radius:20px;background:#fff;color:#000;font-size:15px;line-height:1.35;font-weight:550;
+  box-shadow:0 0 0 1px rgba(0,0,0,.06),0 16px 40px -14px rgba(0,0,0,.35);opacity:0;transform:scale(.6) translateY(10px);transition:opacity .3s,transform .5s cubic-bezier(.2,1.5,.4,1);pointer-events:auto}
+.peek.l .pk-bub{left:clamp(110px,11vw,170px);transform-origin:0 100%;border-bottom-left-radius:6px}
+.peek.r .pk-bub{right:clamp(110px,11vw,170px);transform-origin:100% 100%;border-bottom-right-radius:6px}
+.peek.talk .pk-bub{opacity:1;transform:none}
+.pk-bub b{color:#FF590D}
+.pk-bub button{position:absolute;top:6px;right:8px;border:0;background:none;font-size:18px;color:#999;cursor:pointer;line-height:1}
+@media (max-width:820px){.pk-fig{width:118px}.pk-bub{bottom:150px;max-width:200px;font-size:13.5px}.peek.l .pk-bub{left:84px}.peek.r .pk-bub{right:84px}}
+@media (prefers-reduced-motion:reduce){.peek{display:none}}
 </style>
 </head>
 <body>
@@ -1390,6 +1408,12 @@ body.night .bk{background:var(--bn)}
   </div>
 </section>
 </main>
+<!-- illustrated Joy peeks in from the screen edges -->
+<div class="peek" id="peek" aria-live="polite">
+  <div class="pk-fig"><img alt="" id="pkImg" src="assets/me-wave.webp"></div>
+  <div class="pk-bub"><p id="pkTxt"></p><button type="button" id="pkX" aria-label="Hide">×</button></div>
+</div>
+
 
 <script>
 (function(){
@@ -1758,6 +1782,42 @@ body.night .bk{background:var(--bn)}
   });
   book.addEventListener('pointerleave',()=>{tx=0;ty=0;tl=0;book.classList.remove('lifted');go()});
   book.addEventListener('pointerdown',()=>{tl=.4;go()});
+})();
+</script>
+
+<script>
+/* Joy pops in from alternating sides at key moments, says something, then slides away */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const pk=document.getElementById('peek'), img=document.getElementById('pkImg'), txt=document.getElementById('pkTxt');
+  let muted=false; try{muted=sessionStorage.getItem('pk-off')==='1'}catch(e){}
+  const beats=[
+    {sel:'#work', side:'l', pose:'wave', say:'Hi, I’m Joy <b>\u{1F44B}</b> You’ve found the designer you’re looking for.'},
+    {sel:'.ch:nth-of-type(2)', side:'r', pose:'wink', say:'This one? Real merchants, real research. <b>Keep going.</b>'},
+    {sel:'.bk', side:'l', pose:'point', say:'My favourite part. <b>Turn the pages</b> ↓'},
+    {sel:'.gal', side:'r', pose:'wink', say:'Campaigns that people actually stop for.'},
+    {sel:'#contact', side:'l', pose:'heart', say:'Thanks for scrolling this far. <b>Let’s build something.</b>'}
+  ];
+  const seen=new Set(); let busy=false, hideT;
+  function show(b){
+    busy=true; clearTimeout(hideT);
+    pk.className='peek '+b.side; img.src='assets/me-'+b.pose+'.webp'; txt.innerHTML=b.say;
+    requestAnimationFrame(()=>{pk.style.setProperty('--s',1);pk.classList.add('on');setTimeout(()=>pk.classList.add('talk'),550)});
+    hideT=setTimeout(hide,4200);
+  }
+  function hide(){pk.classList.remove('talk');setTimeout(()=>{pk.style.setProperty('--s',0);pk.classList.remove('on');setTimeout(()=>busy=false,700)},250)}
+  document.getElementById('pkX').addEventListener('click',()=>{hide();muted=true;try{sessionStorage.setItem('pk-off','1')}catch(e){}});
+  function check(){
+    if(muted||busy)return;
+    for(let i=0;i<beats.length;i++){
+      if(seen.has(i))continue;
+      const el=document.querySelector(beats[i].sel); if(!el)continue;
+      const r=el.getBoundingClientRect();
+      if(r.top<innerHeight*.55&&r.bottom>innerHeight*.3){seen.add(i);show(beats[i]);break}
+    }
+  }
+  addEventListener('scroll',check,{passive:true}); window.__lenis&&window.__lenis.on('scroll',check);
+  ['wave','point','heart','wink'].forEach(n=>{const i=new Image();i.src='assets/me-'+n+'.webp'});
 })();
 </script>
 </body>
